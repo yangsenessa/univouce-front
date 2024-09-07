@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 85.7% 97.3%;
+
+    --ring: 217.2 32.6% 17.5%;
+  }
+
+  html {
+    /* 抗锯齿，解决字体粗细不一样的问题 */
+    @apply antialiased;
+    line-height: 1.5715;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+}
+
+body,
+html {
+  background: #010101;
+  color: white;
+  height: var(--tg-viewport-height);
+  overflow-y: clip !important;
+  overflow-x: clip !important;
+}
+
+/* 更改自动填充后的输入框背景颜色 */
+/* input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 40px #1f2432 inset !important;
+} */
+
+/* 安全区域 */
+
+/* body {
+  padding-top: constant(safe-area-inset-top, 20px);
+  padding-top: env(safe-area-inset-top, 20px);
+}
+
+.header {
+  padding-top: calc(20px + constant(safe-area-inset-top, 20px));
+  padding-top: calc(20px + env(safe-area-inset-top, 20px));
+}
+
+.footer {
+  padding-bottom: calc(20px + constant(safe-area-inset-bottom, 20px));
+  padding-bottom: calc(20px + env(safe-area-inset-bottom, 20px));
+} */
+
+/* @supports not (constant(safe-area-inset-top)) {
+  body,
+  .header,
+  .footer {
+    padding: 20px 0;
+  }
+}
+
+@supports not (env(safe-area-inset-top)) {
+  body,
+  .header,
+  .footer {
+    padding: 20px 0;
+  }
+} */
