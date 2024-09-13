@@ -9,13 +9,20 @@ import SlideBar from '@/components/slide-bar';
 import { TopBar } from '@/components/topBar';
 import { getCommonInfo, requestUserInfo, testUser, toClaim } from '@/api/apis';
 import alermPng from '@/assets/alerm.png';
-import { Popconfirm } from 'antd'
+import { Close } from '@icon-park/react';
+import levelPng1 from '@/assets/level1.png';
+import levelPng2 from '@/assets/level2.png';
+import { Popconfirm, Drawer } from 'antd';
+import { useReactMediaRecorder } from "react-media-recorder-2";
+
 
 function HomePage() {
   const videoRef = useRef(null);
   const [count, setCount] = useState(0); // 当前数量
   const [allCount, setAllCount] = useState(0); // 总量
   const [claim, setClaim] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isRecording,setIsRecording] = useState(false);
   const [shouldPlay, setShouldPlay] = useState(true);
   const [leftTime, setLeftTime] = useState(0);
   const [userInfo, setUserInfo] = useState<any>(null);
@@ -121,8 +128,40 @@ function HomePage() {
     WebApp.close();
   };
 
-  const confirm = () => {
-    hiddenApp();
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const onOpenRecording = () => {
+    setOpen(true);
+  }
+
+  const onStartRecording = () => {
+    if(isRecording){
+        stopRecording();
+    }else {
+        startRecording();
+    }
+
+    setIsRecording(!isRecording);
+  };
+
+  const {
+    status,
+    startRecording,
+    stopRecording,
+    mediaBlobUrl,
+  } = useReactMediaRecorder({ audio: true });
+
+  async function convertMediaBlobUrlToBlob(mediaBlobUrl:any){
+    try {
+      const response = await fetch(mediaBlobUrl);
+      const blob = await response.blob();
+      return blob;
+    } catch (error) {
+      console.error("Error al convertir mediaBlobUrl a Blob:", error);
+      return null;
+    }
   }
 
   return (
@@ -175,11 +214,11 @@ function HomePage() {
         </div>
 
         <div className="item-center fixed bottom-[18%] left-0 flex w-full justify-center">
-          <Popconfirm className="bg-blue-700 text-stone-300"
-            title="Uploading your voice" description="For privacy,it will back to bot for voice uploading.You can reload this miniapp from our bot." onConfirm={() => confirm()}>
-            <button
+        
+          <button
               className="btn btn-square btn-primary w-[228px] rounded-[30px] border-none bg-gradient-to-br from-[#1AEEC7] via-[#3284FF] to-[#DC3FFF]"
-            >
+              onClick={()=>onOpenRecording()}
+          >
               {shouldPlay && (
                 <span className="btn-primary text-base font-semibold text-[#fff]">
                   Click to start Recording
@@ -191,12 +230,58 @@ function HomePage() {
                   m {_.padStart(formattedRes.seconds, 2, '0')}s<br />Click to bot
                 </span>
               )}
-            </button>
-          </Popconfirm>
+          </button>
         </div>
       </div>
 
       {/* <Tabbar /> */}
+      <Drawer
+        closeIcon={false}
+        placement="bottom"
+        closable={false}
+        onClose={onClose}
+        open={open}
+        style={{
+          background: '#24232A',
+          color: '#fff',
+          borderRadius: '20px 20px 0 0',
+          height: '450px',
+        }}
+        bodyStyle={{ padding: '14px' }}
+      >
+        <div className="relative">
+          <div className="absolute left-0 top-[20px] z-0 flex h-[200px] w-full items-center justify-center">
+            <div className="h-[120px] w-1/2 rounded-full bg-gradient-to-tr from-[#E43FFF] to-[#3284FF] opacity-75 blur-[50px]"></div>
+          </div>
+          <div className="relative z-10 text-center">
+            <div className="absolute right-0 top-[-5px]" onClick={() => onClose()}>
+              <Close theme="outline" size="18" strokeWidth={3} />
+            </div>
+            <div className="mt-2 text-xl font-medium">Upload voice</div>
+            <div className="item-center flex h-[160px] justify-center">
+              <img src={isRecording ? levelPng1 : levelPng2} alt="" className="w-[160px]" />
+            </div>
+
+            <div>
+                <button
+                     className="btn btn-square btn-primary w-[228px] rounded-[30px] border-none bg-gradient-to-br from-[#1AEEC7] via-[#3284FF] to-[#DC3FFF]"
+                     onClick={() => onStartRecording()}
+                >
+                  {isRecording && (
+                       <span className="btn-primary text-base font-semibold text-[#fff]">
+                        Click to stop Recording
+                       </span>
+                   )}
+                  {!isRecording && (
+                        <span className="btn-primary text-base font-semibold text-[#fff]">
+                         Click to start Recording
+                        </span>
+                   )}
+                </button>
+            </div>
+          </div>
+        </div>
+      </Drawer>
     </div>
   );
 }
