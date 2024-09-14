@@ -146,13 +146,25 @@ function HomePage() {
     setIsRecording(!isRecording);
   };
 
+  const uploadVoive= (mediaBlobUrl:string) =>{
+    const bolbObj = convertMediaBlobUrlToBlob(mediaBlobUrl);
+    console.log("Fetch blob success:"+mediaBlobUrl);
+  }
+
+
   const {
     status,
     startRecording,
     stopRecording,
     mediaBlobUrl,
-  } = useReactMediaRecorder({ audio: true });
+  } = useReactMediaRecorder({ audio: true,
+    blobPropertyBag: {
+      type: "audio/wav",
+   },
+   onStop:uploadVoive
+});
 
+ 
   async function convertMediaBlobUrlToBlob(mediaBlobUrl:any){
     try {
       const response = await fetch(mediaBlobUrl);
