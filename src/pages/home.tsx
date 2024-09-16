@@ -7,12 +7,12 @@ import message from 'antd/es/message';
 import SlideBar from '@/components/slide-bar';
 // import { Tabbar } from '@/components/tabbar';
 import { TopBar } from '@/components/topBar';
-import { getCommonInfo, requestUserInfo, testUser, toClaim } from '@/api/apis';
+import { getCommonInfo, requestUserInfo, testUser, toClaim ,uploadVoice} from '@/api/apis';
 import alermPng from '@/assets/alerm.png';
 import { Close } from '@icon-park/react';
 import levelPng1 from '@/assets/level1.png';
 import levelPng2 from '@/assets/level2.png';
-import { Popconfirm, Drawer } from 'antd';
+import { Drawer } from 'antd';
 import { useReactMediaRecorder } from "react-media-recorder-2";
 
 
@@ -146,9 +146,30 @@ function HomePage() {
     setIsRecording(!isRecording);
   };
 
-  const uploadVoive= (mediaBlobUrl:string) =>{
-    const bolbObj = convertMediaBlobUrlToBlob(mediaBlobUrl);
-    console.log("Fetch blob success:"+mediaBlobUrl);
+  const doUploadVoice= async (mediaBlobUrl: string, blob: Blob) =>{
+     //const bolbObj = convertMediaBlobUrlToBlob(mediaBlobUrl);
+     console.log("Fetch blob success:"+mediaBlobUrl);
+     if(blob != null || blob !=undefined) {
+        console.log("Blob voice is not null");
+     }
+
+     console.log("curr userid: ", currentUser?.id);
+
+     try {
+       const res = await uploadVoice(currentUser?.id, blob);
+       if(res?.res_code === 'SUCCESS') {
+           message.info(res?.res_msg);
+       } else{
+           message.error("Upload failed:"+res?.res_msg);
+       }
+       setOpen(false);
+
+     } catch (error) {
+       console.debug('🚀 ~ upload voice ~ error:', error);
+       message.error("Service Fault, please wait sometimes and try again.")
+    }
+
+
   }
 
 
@@ -161,7 +182,7 @@ function HomePage() {
     blobPropertyBag: {
       type: "audio/wav",
    },
-   onStop:uploadVoive
+   onStop:doUploadVoice
 });
 
  
@@ -169,7 +190,9 @@ function HomePage() {
     try {
       const response = await fetch(mediaBlobUrl);
       const blob = await response.blob();
-      return blob;
+
+      const blobVoice = new Blob([blob],{type:'audio/wav'});
+      return blobVoice
     } catch (error) {
       console.error("Error al convertir mediaBlobUrl a Blob:", error);
       return null;

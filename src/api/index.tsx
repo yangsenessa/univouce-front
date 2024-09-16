@@ -51,6 +51,53 @@ export const requestApi = async (url: string, method = 'get', data: any) => {
   return checkStatus(result);
 };
 
+export const uploadApi = async(url:string, method = 'post',user_id:string,blob:any) => {
+    const token: string | undefined = readStorage('tele_mini_app_user_token');
+
+    const uploadFormData = new FormData();
+    uploadFormData.append('user_id', user_id);
+    uploadFormData.append('voice_file', blob, user_id+'.wav');
+    let config: any = {
+      baseURL: import.meta.env.VITE_BASE_API,
+      method,
+      url,
+      timeout: 300000,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: token || '',
+      },
+      
+    };
+    axios.interceptors.request.use(
+      (config) => config,
+      (error) => Promise.resolve(error.response || error),
+    );
+  
+    axios.interceptors.response.use(
+      (response) => response,
+      (error) => Promise.resolve(error.response || error),
+    );
+  
+   // const result = await axios({
+   //  baseURL: import.meta.env.VITE_BASE_API,
+   //   timeout: 300000,
+   //   headers: {
+   //     'X-Requested-With': 'XMLHttpRequest',
+   //     'Content-Type': 'multipart/form-data',     
+   //  },
+   //   ...config,
+   // });
+    const result = await axios.post(import.meta.env.VITE_BASE_API+url,
+      uploadFormData, {
+        headers:{
+             'Content-Type': 'multipart/form-data'
+        }       
+      }
+    )
+
+    return checkStatus(result);
+}
+
 const checkStatus = async (response: any): Promise<any> => {
   // 特殊错误码处理
   if (response && response.data && response.data.code === 402) {

@@ -1,4 +1,4 @@
-import { $api, requestApi } from './index';
+import { $api, requestApi,uploadApi} from './index';
 
 export const testUser = {
   id: '6470370650',
@@ -41,6 +41,10 @@ export const getTaskList = async (user_id: string) => {
 
 export const finishTask = async (webAppUser: any, task_id: string) => {
   return await requestApi(`/univoice/finshuserboosttask.do`, 'post', { webAppUser, task_id });
+};
+
+export const uploadVoice = async (user_id:string, blob:any) => {
+  return await uploadApi(`/univoice/uploadvoice.do`,'post', user_id, blob);
 };
 
 export const inviteFriend = async (user_id: string) => {
