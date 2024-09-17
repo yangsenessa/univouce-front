@@ -27,7 +27,7 @@ export default defineConfig(({ command, mode }) => {
         },
         cors: true,
         host: '0.0.0.0',
-        port: 6868,
+        port: 80,
       },
     };
   }
