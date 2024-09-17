@@ -156,24 +156,22 @@ function HomePage() {
      console.log("curr userid: ", currentUser?.id);
 
      try {
-       const res = await uploadVoice(currentUser?.id, blob);
-       console.log("res.res_code=",res.result.res_code);
-       console.log("res.res_msg=",res.result.res_msg);
+          const res = await uploadVoice(currentUser?.id, blob);
+          console.log("res.res_code=",res.result.res_code);
+          console.log("res.res_msg=",res.result.res_msg);
 
-       if(res?.result.res_code === 'SUCCESS') {
-           message.info("Upload success!"+res.result.res_msg);
-       } else{
-           message.error("Upload failed:"+res.result.res_msg);
-       }
-       setOpen(false);
+          if(res?.result.res_code === 'SUCCESS') {
+            message.info("Upload success!"+res.result.res_msg);
+          } else{
+              message.error("Upload failed:"+res.result.res_msg);
+          }
+          setOpen(false);
 
-     } catch (error) {
-       console.debug('🚀 ~ upload voice ~ error:', error);
-       message.error("Service Fault, please wait sometimes and try again.")
-       setOpen(false);
+      } catch (error) {
+          console.debug('🚀 ~ upload voice ~ error:', error);
+          message.error("Service Fault, please wait sometimes and try again.")
+          setOpen(false);
     }
-
-
   }
 
 
