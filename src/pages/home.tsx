@@ -158,7 +158,7 @@ function HomePage() {
      try {
        const res = await uploadVoice(currentUser?.id, blob);
        if(res?.res_code === 'SUCCESS') {
-           message.info(res?.res_msg);
+           message.info("Upload success!"+res?.res_msg);
        } else{
            message.error("Upload failed:"+res?.res_msg);
        }
