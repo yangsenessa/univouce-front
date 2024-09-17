@@ -170,6 +170,7 @@ function HomePage() {
      } catch (error) {
        console.debug('🚀 ~ upload voice ~ error:', error);
        message.error("Service Fault, please wait sometimes and try again.")
+       setOpen(false);
     }
 
 
