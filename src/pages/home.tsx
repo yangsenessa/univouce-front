@@ -157,10 +157,13 @@ function HomePage() {
 
      try {
        const res = await uploadVoice(currentUser?.id, blob);
-       if(res?.res_code === 'SUCCESS') {
-           message.info("Upload success!"+res?.res_msg);
+       console.log("res.res_code=",res.result.res_code);
+       console.log("res.res_msg=",res.result.res_msg);
+
+       if(res?.result.res_code === 'SUCCESS') {
+           message.info("Upload success!"+res.result.res_msg);
        } else{
-           message.error("Upload failed:"+res?.res_msg);
+           message.error("Upload failed:"+res.result.res_msg);
        }
        setOpen(false);
 

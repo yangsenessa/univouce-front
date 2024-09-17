@@ -57,17 +57,7 @@ export const uploadApi = async(url:string, method = 'post',user_id:string,blob:a
     const uploadFormData = new FormData();
     uploadFormData.append('user_id', user_id);
     uploadFormData.append('voice_file', blob, user_id+'.wav');
-    let config: any = {
-      baseURL: import.meta.env.VITE_BASE_API,
-      method,
-      url,
-      timeout: 300000,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: token || '',
-      },
-      
-    };
+    
     axios.interceptors.request.use(
       (config) => config,
       (error) => Promise.resolve(error.response || error),
@@ -118,6 +108,7 @@ const checkStatus = async (response: any): Promise<any> => {
   }
 
   if (response.status === 200 && response.data.result?.res_code === 'SUCCESS') {
+    console.log('======SUCCESS======', response.data);
     return response.data;
   }
 
