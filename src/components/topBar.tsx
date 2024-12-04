@@ -86,7 +86,7 @@ export const TopBar = ({ info, user }: { [propName: string]: any }) => {
       <div className="navbar-center" onClick={openIcpModal}>
         <div className="flex h-[34px] items-center justify-center gap-x-1 rounded-[30px] border border-[rgba(255,255,255,0.2)] bg-[rgba(255,255,255,0.18)] px-4 text-sm text-[#fff]">
           <img className="ml-[-8px] mr-2 w-6" src={icpIdentifyPng} alt="wallet" />
-          <div>Link your Icp wallet</div>
+          <div>Link wallet</div>
         </div>
 
       </div>
