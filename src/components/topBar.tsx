@@ -1,11 +1,12 @@
-import { useEffect, useState,useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import ShowNumber from '@/utils/number';
 import coinPng from '@/assets/coin.png';
 import userAvatarPng from '@/assets/use-avatar.png';
 import icpIdentifyPng from '@/assets/icp.png';
+import {linkToIcp}  from '@/api/apis';
 import { cn } from '@/utils';
 import { UserOutlined } from '@ant-design/icons';
-import { Button, Modal,Input } from 'antd';
+import { Button, Modal, Input } from 'antd';
 
 
 
@@ -14,7 +15,7 @@ export const TopBar = ({ info, user }: { [propName: string]: any }) => {
   const [balance, setBalance] = useState(0);
   const [name, setName] = useState('');
   const [openModal, setOpenModal] = useState(false);
-  const [principalVal,setPrincipalVal] = useState('');
+  const [principalVal, setPrincipalVal] = useState('');
 
   useEffect(() => {
     setName(user?.username || user?.first_name);
@@ -27,17 +28,34 @@ export const TopBar = ({ info, user }: { [propName: string]: any }) => {
     setPrincipalVal(event.target.value);
   };
 
-  const showIcpModal =  () => {
-    setOpenModal(!openModal);
-  };
+  const submitPrincipalId = async ()=>{
+    try{
+      const res = await linkToIcp(user.id,principalVal);
+      if (res.res_code === 'FAIL') {
+        alert(res.res_msg || 'something wrong, please try again');
+        return;
+      }
+      alert("Success")
+      closeIcpModal();
+    }  catch (error) {
+      console.log('🚀 ~ bind icp ~ error:', error);
+      alert('Network error,please check your link')
+    }
+    
+  }
 
-  const openIcpModal =() =>{
+
+
+  const openIcpModal = () => {
     setOpenModal(true)
+  }
+
+  const closeIcpModal = () => {
+    setOpenModal(false)
   }
 
   const modalStyles = {
     header: {
-      borderLeft: `5px solid`,
       borderRadius: 0,
       paddingInlineStart: 5,
     },
@@ -49,7 +67,7 @@ export const TopBar = ({ info, user }: { [propName: string]: any }) => {
       backdropFilter: 'blur(10px)',
     },
     footer: {
-      borderTop: '1px solid #333',
+      borderTop: '0.5px solid #333',
     },
     content: {
       boxShadow: '0 0 30px #999',
@@ -70,22 +88,7 @@ export const TopBar = ({ info, user }: { [propName: string]: any }) => {
           <img className="ml-[-8px] mr-2 w-6" src={icpIdentifyPng} alt="wallet" />
           <div>Link your Icp wallet</div>
         </div>
-        <Modal
-          title={<p>Loading Modal</p>}
-          className="text-sm font-medium"
-          styles={modalStyles}
-          
-          footer={
-            <Button className="center" type="primary" onClick={showIcpModal}>
-              Submit
-            </Button>
-          }
-          open={openModal}
-          onCancel={showIcpModal}
-        >
-        <Input size="large" placeholder="large size" value={principalVal} prefix={<UserOutlined/>} 
-              ref={inputPrincipal} onChange={getPrincipalValue}/>
-        </Modal>
+
       </div>
 
       <div className="navbar-end">
@@ -101,6 +104,22 @@ export const TopBar = ({ info, user }: { [propName: string]: any }) => {
           />
         </div>
       </div>
+      <Modal
+        title={<p>Link to your ICP wallet</p>}
+        className="text-sm font-medium"
+        styles={modalStyles}
+
+        footer={
+          <Button className="center" type="primary" onClick={submitPrincipalId} >
+            Submit
+          </Button>
+        }
+        open={openModal}
+        onCancel={closeIcpModal}
+      >
+        <Input size="large" placeholder="Copy and paste your principal id here" value={principalVal} prefix={<UserOutlined />}
+          ref={inputPrincipal} onChange={getPrincipalValue} />
+      </Modal>
     </div>
   );
 };
