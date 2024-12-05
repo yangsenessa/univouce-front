@@ -72,5 +72,5 @@ export const toClaim = async (user_id: string) => {
 };
 
 export const linkToIcp = async(user_id:string, principal_id:string) =>{
-  return await requestApi(`/univoice/linkicp.do`,'post',{userid:user_id,principalid : principal_id})
+  return await requestApi(`/univoice/linkicp.do`,'post',{userid:user_id, principalid:principal_id})
 }

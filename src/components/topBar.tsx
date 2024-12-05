@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef} from 'react';
 import ShowNumber from '@/utils/number';
 import coinPng from '@/assets/coin.png';
 import userAvatarPng from '@/assets/use-avatar.png';
@@ -30,7 +30,7 @@ export const TopBar = ({ info, user }: { [propName: string]: any }) => {
 
   const submitPrincipalId = async ()=>{
     try{
-      const res = await linkToIcp(user.id,principalVal);
+      const res = await linkToIcp(String(user.id),principalVal);
       if (res.res_code === 'FAIL') {
         alert(res.res_msg || 'something wrong, please try again');
         return;
